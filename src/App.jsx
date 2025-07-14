@@ -1,10 +1,25 @@
-import { useState } from 'react'
+import { useState,useCallback,useEffect, use } from 'react'
 
 function App() {
   const [length, setLength] = useState(8)
   const [numbers, setNumbers] = useState(false)
   const [char, setChar] = useState(false)
   const [password, setPassword] = useState(0)
+  
+  const generatePassword = useCallback(() => {
+    let pass="";
+    let str ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if(numbers) str += "0123456789";
+    if(char) str += "!@#$%^&*()_+[]{}|;:,.<>?";
+    for(let i=0; i<length; i++){
+      pass += str.charAt(Math.floor(Math.random() * str.length));
+      setPassword(pass);
+    }
+  }, [length, numbers, char]);
+
+  useEffect(() => {
+    generatePassword();
+  }, [length, numbers, char, generatePassword]);
 
   return (
     <>
